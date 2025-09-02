@@ -1,0 +1,12 @@
+# Python venv
+/include/
+/lib/
+/lib64/
+/bin/
+/share/
+# Stockfish binary
+/cmd/stockfish
+# Test image
+/test/*
+__pycache__/
+/data/*

@@ -8,7 +8,7 @@ def start_row(filename: str):
     conn = sql.connect("../queue.db")
     cursor = conn.cursor()
     res = cursor.execute("SELECT name FROM sqlite_master")
-    if (res.fetchone()[0] != "task"):
+    if (res.fetchone() == None):
         cursor.execute("CREATE TABLE task (Filename TEXT, Finished BOOL, Result TINYTEXT)")
     conn.execute("INSERT INTO task VALUES(?, FALSE, \"\")", (filename,))
     conn.commit()
@@ -17,6 +17,14 @@ def start_row(filename: str):
 def delete_row(filename: str):
     conn = sql.connect("../queue.db")
     conn.execute("DELETE FROM task WHERE Filename=?;", (filename, ))
+    conn.commit()
+    conn.close()
+
+def update_row(filename: str, result: str):
+    conn = sql.connect("../queue.db")
+    conn.execute("UPDATE task SET Finished=TRUE WHERE Filename=?", (filename,))
+    conn.commit()
+    conn.execute("UPDATE task SET Result=? WHERE Filename=?", (result, filename))
     conn.commit()
     conn.close()
 
@@ -31,3 +39,6 @@ def add_image(img: bytes):
         os.remove(f"../data/{id}.img")
         return make_response("Not an image", 400)
     return id
+
+start_row("fish")
+update_row("fish", "res")

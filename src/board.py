@@ -27,8 +27,7 @@ def process_image(img: cvt.MatLike) -> cvt.MatLike:
     dilate = cv.dilate(canny, cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3)))
 
     grad = cv.morphologyEx(blur, cv.MORPH_GRADIENT, cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5)), iterations=1)
-    grad_blur = cv.GaussianBlur(grad, (5, 5), 0)
-    _, thresh = cv.threshold(grad_blur, 100, 255, cv.THRESH_OTSU+cv.THRESH_BINARY)
+    _, thresh = cv.threshold(grad, 100, 255, cv.THRESH_OTSU+cv.THRESH_BINARY)
     return thresh
 
 def edge(img: cvt.MatLike):

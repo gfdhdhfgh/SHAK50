@@ -4,11 +4,11 @@ import glob
 
 def show(index: int):
     img = cv.imread(glob.glob("../test/*.*")[index-1])
-    down = board.downsample(img, 0.5)
+    down = board.downsample(img, 0.7)
     proc = board.process_image(down)
     ed = board.edge(proc)
     til = board.tile(ed)
-    cv.imshow("Test Preprocess", ed)
+    cv.imshow("Test Preprocess", proc)
 
 def main():
     file_amount = len(glob.glob("../test/*.*"))

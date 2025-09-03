@@ -4,9 +4,11 @@
 /lib64/
 /bin/
 /share/
+/Scripts/
 # Stockfish binary
 /cmd/stockfish
 # Test image
 /test/*
 __pycache__/
 /data/*
+queue.db

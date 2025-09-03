@@ -4,14 +4,20 @@ import cv2 as cv
 from flask import make_response
 import os
 
-def db():
+def start_row(filename: str):
     conn = sql.connect("../queue.db")
     cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS task(name TEXT, finished BOOL, result TINYTEXT)")
-    res = cursor.execute("INSERT INTO task VALUES(?)", "fish", False, "")
+    res = cursor.execute("SELECT name FROM sqlite_master")
+    if (res.fetchone()[0] != "task"):
+        cursor.execute("CREATE TABLE task (Filename TEXT, Finished BOOL, Result TINYTEXT)")
+    conn.execute("INSERT INTO task VALUES(?, FALSE, \"\")", (filename,))
     conn.commit()
-    res.fetchall()
-    print(res)
+    conn.close()
+
+def delete_row(filename: str):
+    conn = sql.connect("../queue.db")
+    conn.execute("DELETE FROM task WHERE Filename=?;", (filename, ))
+    conn.commit()
     conn.close()
 
 def add_image(img: bytes):
@@ -25,5 +31,3 @@ def add_image(img: bytes):
         os.remove(f"../data/{id}.img")
         return make_response("Not an image", 400)
     return id
-
-db()
